@@ -1,0 +1,25 @@
+{
+  "name": "personal-blog",
+  "version": "1.0.0",
+  "description": "This is a personal blog website for my portfolio",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "keywords": [
+    "nuxt",
+    "vue",
+    "nest",
+    "tiny-mce",
+    "blog"
+  ],
+  "author": "Kyaw Zin Thiha",
+  "license": "MIT",
+  "devDependencies": {
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5"
+  },
+  "lint-staged": {
+    "*.{vue,ts,tsx,scss,md}": "prettier --write"
+  }
+}
