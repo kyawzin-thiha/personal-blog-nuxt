@@ -39,6 +39,7 @@ model Post {
   title     String
   slug      String   @unique
   subtitle  String
+  thumbnail String
   content   String
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])

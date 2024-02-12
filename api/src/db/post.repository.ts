@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../helper/prisma.service';
 import { PostDto, PostsDto } from '../types/data.dto';
 import { ErrorDto } from '../types/error.dto';
-import { Post } from '@prisma/client';
+import { Post, Prisma } from '@prisma/client';
 
 @Injectable()
 export class PostRepository {
@@ -46,6 +46,35 @@ export class PostRepository {
 			});
 			return [posts, null];
 		} catch (error) {
+			return [null, { message: 'Something went wrong. Please try again later.', status: 500 }];
+		}
+	}
+
+	async create(id: string, title: string, slug: string, subtitle: string, thumbnail: string, content: string): Promise<[PostDto, ErrorDto]> {
+		try {
+			const post = await this.prisma.post.create({
+				data: {
+					title,
+					slug,
+					subtitle,
+					thumbnail,
+					content,
+					author: {
+						connect: {
+							id,
+						},
+					},
+				},
+				include: {
+					author: true,
+				},
+			});
+
+			return [post, null];
+		} catch (error) {
+			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+				return [null, { message: 'Post with this slug already exists.', status: 400 }];
+			}
 			return [null, { message: 'Something went wrong. Please try again later.', status: 500 }];
 		}
 	}
